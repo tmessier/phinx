@@ -1015,6 +1015,8 @@ ORDER BY T.[name], I.[index_id];";
                 return ['name' => 'bit'];
             case static::PHINX_TYPE_UUID:
                 return ['name' => 'uniqueidentifier'];
+            case static::PHINX_TYPE_XML:
+                return ['name' => 'xml'];
             case static::PHINX_TYPE_FILESTREAM:
                 return ['name' => 'varbinary', 'limit' => 'max'];
             // Geospatial database types
@@ -1227,7 +1229,7 @@ SQL;
      */
     public function getColumnTypes()
     {
-        return array_merge(parent::getColumnTypes(), ['filestream']);
+        return array_merge(parent::getColumnTypes(), ['filestream','xml']);
     }
 
     /**
@@ -1270,5 +1272,14 @@ SQL;
         }
 
         return new Connection(['driver' => $driver] + $options);
+    }
+
+    protected function getDefaultValueDefinition($default, $columnType = null)
+    {
+        if (is_string($default) && 'sysdate' === $default) {
+            return " DEFAULT getDate()";
+        } else {
+            return parent::getDefaultValueDefinition($default, $columnType);
+        }
     }
 }

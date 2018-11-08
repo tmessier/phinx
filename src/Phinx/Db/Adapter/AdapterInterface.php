@@ -79,6 +79,9 @@ interface AdapterInterface
     const PHINX_TYPE_MACADDR = 'macaddr';
     const PHINX_TYPE_INTERVAL = 'interval';
 
+    // Only for SQL Server
+    const PHINX_TYPE_XML = 'xml';
+
     /**
      * Get all migrated version numbers.
      *
